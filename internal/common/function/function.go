@@ -602,3 +602,22 @@ func checkLabelAnnotationValueIsValid(labelsOrAnnotations map[string]string, key
 func GetLogger(ctx context.Context, obj client.Object, key string) logr.Logger {
 	return log.FromContext(ctx).WithValues(key, types.NamespacedName{Name: obj.GetName(), Namespace: obj.GetNamespace()})
 }
+
+// TODO remove
+func GetVeleroBackupStorageLocationByLabel(ctx context.Context, clientInstance client.Client, namespace string, labelValue string) (*velerov1.BackupStorageLocation, error) {
+	bslList := &velerov1.BackupStorageLocationList{}
+
+	// Call the generic ListLabeledObjectsInNamespace function
+	if err := ListObjectsByLabel(ctx, clientInstance, namespace, "openshift.io/oadp-nabsl-origin-nacuuid", labelValue, bslList); err != nil {
+		return nil, err
+	}
+
+	switch len(bslList.Items) {
+	case 0:
+		return nil, nil // No matching VeleroBackupStorageLocation found
+	case 1:
+		return &bslList.Items[0], nil // Found 1 matching VeleroBackupStorageLocation
+	default:
+		return nil, fmt.Errorf("multiple VeleroBackupStorageLocation objects found with label %s=%s in namespace '%s'", velerov1.StorageLocationLabel, labelValue, namespace)
+	}
+}
