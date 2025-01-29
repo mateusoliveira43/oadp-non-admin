@@ -23,6 +23,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"time"
 
 	// TODO when to update oadp-operator version in go.mod?
 	"github.com/openshift/oadp-operator/api/v1alpha1"
@@ -169,6 +170,8 @@ func main() {
 		Client:        mgr.GetClient(),
 		Scheme:        mgr.GetScheme(),
 		OADPNamespace: oadpNamespace,
+		// TODO user input
+		SyncPeriod: 5 * time.Minute,
 	}).SetupWithManager(mgr); err != nil {
 		setupLog.Error(err, "unable to setup NonAdminBackupStorageLocation controller with manager")
 		os.Exit(1)
