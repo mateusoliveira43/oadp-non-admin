@@ -12,6 +12,7 @@ require (
 	github.com/openshift/oadp-operator v1.0.2-0.20250205172928-bb0c25a9c6af
 	github.com/stretchr/testify v1.9.0
 	github.com/vmware-tanzu/velero v1.14.0
+	golang.org/x/sync v0.11.0
 	k8s.io/api v0.30.5
 	k8s.io/apimachinery v0.30.5
 	k8s.io/client-go v0.30.5
